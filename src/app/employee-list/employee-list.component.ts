@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AfterViewInit, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { EmployeeService } from '../services/employee.service';
 import { IEmployee } from '../models/Employee'
@@ -19,31 +19,47 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   searchKey:string;
   employeeList : IEmployee[];
   searcKeyFound = false;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  length:number;
+  pageSize = 2;
+  pageIndex =0;
+  pageEvent:PageEvent;
+  pageSizeOptions = [1,2,5,10,20];
+  currentIndex : number = 0;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private employeeService:EmployeeService, private employeeDataService:EmployeeData, private route: Router) { }
 
+
+  loadData(pageIndex:number, pageSize:number, empData: IEmployee[]){
+    this.dataSource = new MatTableDataSource(empData.slice(pageIndex, (pageIndex+pageSize)))
+  }
   ngOnInit(): void {
     if(this.employeeDataService.employeeData){
-      this.dataSource = new MatTableDataSource(this.employeeDataService.employeeData);
+      this.loadData(0, this.pageSize, this.employeeDataService.employeeData);
+      this.length = this.employeeDataService.employeeData.length;
     }
     else{
     this.employeeService.getEmployeeList().subscribe((employeeList: IEmployee[])=>{
-      this.dataSource = new MatTableDataSource(employeeList);
+      this.loadData(0, this.pageSize,employeeList);
       this.employeeDataService.employeeData = employeeList;
+      this.length = this.employeeDataService.employeeData.length;
     })
+    
   }
   }
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
+    
   }
   applySearch(){
     this.dataSource.filter = this.searchKey.trim().toLocaleLowerCase();
   }
 
   deleteEmployee(row:IEmployee, index:number){
-    this.dataSource.filteredData.splice(index,1);
+    this.dataSource.filteredData.splice((index),1); 
     this.dataSource._updateChangeSubscription();
-    console.log(index);
+    this.employeeDataService.employeeData.splice(this.currentIndex+index,1);
+    console.log(this.currentIndex+index)
+    this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
   }
 
   updateEmployee(id:number){
@@ -52,6 +68,15 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
 
   redirectToDetails(id:IEmployee){
     this.route.navigate([`employeeList/detail/${id.id}`]);
+  }
+
+  onPageChange(e:PageEvent){
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.currentIndex = this.pageSize*this.pageIndex;
+    this.length = e.length;
+    console.log(this.currentIndex);
+    this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
   }
 }
 
