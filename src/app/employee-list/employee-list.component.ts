@@ -66,8 +66,12 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
     this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
   }
 
-  updateEmployee(id:number){
-    console.log(id)
+  updateEmployee(row:IEmployee, index:number){
+    console.log(this.currentIndex+index);
+    this.employeeDataService.toUpdate = true;
+    this.route.navigate([`/employeeList/update/${row.id}`]);
+    this.employeeDataService.updateId =this.currentIndex+ index;
+    this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
   }
 
   redirectToDetails(id:IEmployee){
