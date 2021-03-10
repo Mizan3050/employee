@@ -16,6 +16,8 @@ export class EmployeeDetailComponent implements OnInit {
   constructor(private router: ActivatedRoute, private employeeDataService:EmployeeData, private fb:FormBuilder, private route : Router, private employeeService: EmployeeService) { }
 
   ngOnInit(): void {
+
+    //filtering the employee details
     if(this.employeeDataService.employeeData){
       this.router.params.subscribe((param)=>{
         this.employeeDetail = this.employeeDataService.employeeData.filter(

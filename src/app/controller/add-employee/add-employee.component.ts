@@ -37,6 +37,8 @@ export class AddEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+    //initialising form
     this.addEmployeeForm = this.fb.group({
       name:['',[Validators.required, Validators.minLength(3)]],
       username:['',[Validators.required,  Validators.minLength(3), Validators.pattern('[a-zA-Z0-9 _-]*')]],
@@ -60,6 +62,8 @@ export class AddEmployeeComponent implements OnInit {
         this.employeeDataService.employeeData = employeeList;
       })
     }
+
+  //fetching details of employee values if form status is toUpdate
    if(this.toUpdate){
       this.activatedRoute.paramMap.subscribe((employee)=>{
         this.routerId = +employee.get('id');
@@ -73,6 +77,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
 
+  //patchin values of employee's data that is to be updated
   getEmployee(id:number){
     const employeeDataToEdit = this.employeeDataService.employeeData[id];
     console.log(employeeDataToEdit)
@@ -90,6 +95,8 @@ export class AddEmployeeComponent implements OnInit {
       }
     })
   }
+
+  //adding employee
   addEmployee(){
     this.loading = true;
     this.employeeService.addEmployeeToList(this.addEmployeeForm.value).subscribe((result:IEmployee)=>{
@@ -102,6 +109,8 @@ export class AddEmployeeComponent implements OnInit {
     
   }
 
+
+  //updating employee to array and server
   updateStudent(){
     this.loading = true;
     this.employeeDataService.employeeData[this.employeeDataService.updateId] = this.addEmployeeForm.value;

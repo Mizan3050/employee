@@ -29,15 +29,21 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private employeeService:EmployeeService, private employeeDataService:EmployeeData, private route: Router) { }
 
-
+  //loading data with respected to pages changed
   loadData(pageIndex:number, pageSize:number, empData: IEmployee[]){
     this.dataSource = new MatTableDataSource(empData.slice(pageIndex, (pageIndex+pageSize)))
   }
+
+  //clearing search filter
   clearSearch(){
     this.searchKey = "";
     this.applySearch();
   }
+
+
   ngOnInit(): void {
+
+    //fetching data from api
     if(this.employeeDataService.employeeData){
       this.loadData(0, this.pageSize, this.employeeDataService.employeeData);
       this.length = this.employeeDataService.employeeData.length;
@@ -54,30 +60,44 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   ngAfterViewInit() {
     
   }
+
+  //applying search filter
   applySearch(){
     this.dataSource.filter = this.searchKey.trim().toLocaleLowerCase();
   }
 
+  //deleting employee from the list
   deleteEmployee(row:IEmployee, index:number){
     this.dataSource.filteredData.splice((index),1); 
-    this.dataSource._updateChangeSubscription();
+
+    this.dataSource._updateChangeSubscription();//refreshing dataSource
+
+    //deleting from array
     this.employeeDataService.employeeData.splice(this.currentIndex+index,1);
-    console.log(this.currentIndex+index)
+
+    //updating table 
     this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
   }
 
+
+  //updating employee data
   updateEmployee(row:IEmployee, index:number){
-    console.log(this.currentIndex+index);
+
+    //setting form status to update
     this.employeeDataService.toUpdate = true;
     this.route.navigate([`/employeeList/update/${row.id}`]);
+
+    //setting id of employee to be updated
     this.employeeDataService.updateId =this.currentIndex+ index;
     this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
   }
 
+  //redirects to employee details page
   redirectToDetails(id:IEmployee){
     this.route.navigate([`employeeList/detail/${id.id}`]);
   }
 
+  //making changes whenever page is changed
   onPageChange(e:PageEvent){
     this.pageIndex = e.pageIndex;
     this.pageSize = e.pageSize;
