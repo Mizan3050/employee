@@ -18,6 +18,7 @@ import {  MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserModule,
     FormsModule, ReactiveFormsModule,
     AppRoutingModule, MatTableModule, MatPaginatorModule,
-    BrowserAnimationsModule,HttpClientModule, MatFormFieldModule, FontAwesomeModule
+    BrowserAnimationsModule,HttpClientModule, MatFormFieldModule, MatIconModule,FontAwesomeModule,MatInputModule
   ],
   providers: [AuthGaurd, AuthService, EmployeeService],
   bootstrap: [AppComponent]

@@ -33,6 +33,10 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   loadData(pageIndex:number, pageSize:number, empData: IEmployee[]){
     this.dataSource = new MatTableDataSource(empData.slice(pageIndex, (pageIndex+pageSize)))
   }
+  clearSearch(){
+    this.searchKey = "";
+    this.applySearch();
+  }
   ngOnInit(): void {
     if(this.employeeDataService.employeeData){
       this.loadData(0, this.pageSize, this.employeeDataService.employeeData);
