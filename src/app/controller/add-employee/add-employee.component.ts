@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, Validators, FormArray,FormGroup, FormControl} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IEmployee } from '../models/Employee';
-import { EmployeeData } from '../services/empdata.service';
-import { EmployeeService } from '../services/employee.service';
+import { IEmployee } from '../../models/Employee';
+import { EmployeeData } from '../../services/empdata.service';
+import { EmployeeService } from '../../services/employee.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
