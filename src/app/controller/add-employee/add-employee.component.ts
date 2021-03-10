@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {FormBuilder, Validators, FormArray,FormGroup, FormControl} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IEmployee } from '../../models/Employee';
@@ -12,7 +12,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './add-employee.component.html',
   styleUrls: ['./add-employee.component.css']
 })
-export class AddEmployeeComponent implements OnInit {
+export class AddEmployeeComponent implements OnInit,OnDestroy {
 
   faSpinner = faSpinner;
   fas = fas;
@@ -112,14 +112,24 @@ export class AddEmployeeComponent implements OnInit {
 
   //updating employee to array and server
   updateStudent(){
+    this.employeeDataService.toUpdate = false;
     this.loading = true;
     this.employeeDataService.employeeData[this.employeeDataService.updateId] = this.addEmployeeForm.value;
     this.employeeDataService.employeeData[this.employeeDataService.updateId].id = +this.routerId;
-    this.employeeService.updateEmployeeList(this.employeeDataService.updateId, this.addEmployeeForm.value).subscribe((result:IEmployee)=>{
+    console.log(this.employeeDataService.employeeData[this.employeeDataService.updateId]);
+    this.employeeService.updateEmployeeList(this.employeeDataService.employeeData[this.employeeDataService.updateId].id, this.addEmployeeForm.value).subscribe((result:IEmployee)=>{
       if(result){
         this.loading = false;
       }
+      
       this.route.navigate(['/employeeList']);
+      
     })
+
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.employeeDataService.toUpdate = false;
   }
 }

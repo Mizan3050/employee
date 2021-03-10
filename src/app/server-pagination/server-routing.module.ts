@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGaurd } from "src/app/services/auth-gaurd.service";
-import { AddEmployeeComponent } from "./add-employee.component";
+import { UserComponent } from "./user/user.component";
 
 
 const routes:Routes = [
-    {path: '', canActivate:[AuthGaurd], component: AddEmployeeComponent},
+    {path: 'user', canActivate:[AuthGaurd], component: UserComponent},
 ]
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
   })
-  export class ControllerRoutingModule { }
+  export class ServerSideRoutingModule { }

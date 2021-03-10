@@ -57,6 +57,7 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
     
   }
   }
+  
   ngAfterViewInit() {
     
   }
@@ -89,6 +90,7 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
 
     //setting id of employee to be updated
     this.employeeDataService.updateId =this.currentIndex+ index;
+    console.log(this.employeeDataService.updateId);
     this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
   }
 
