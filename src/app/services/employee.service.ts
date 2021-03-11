@@ -18,7 +18,11 @@ export class EmployeeService{
         return this.http.get<IEmployee[]>(this.url);
     }
 
-    addEmployeeToList(employeeData):Observable<IEmployee>{
+    addEmployeeToList(employeeData:IEmployee):Observable<IEmployee>{
         return this.http.post<IEmployee>(this.url, employeeData);
+    }
+
+    updateEmployeeList(id:number, data):Observable<IEmployee>{
+        return this.http.put<IEmployee>(this.url+`/${id}`,data)
     }
 }

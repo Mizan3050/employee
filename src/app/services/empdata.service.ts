@@ -8,5 +8,7 @@ import { Observable } from "rxjs";
   })
 
 export class EmployeeData {
+   toUpdate : boolean;
+   updateId:number;
    public employeeData: IEmployee[];
 }

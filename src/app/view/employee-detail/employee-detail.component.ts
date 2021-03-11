@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IEmployee } from '../models/Employee';
-import { EmployeeData } from '../services/empdata.service';
-import { EmployeeService } from '../services/employee.service';
+import { IEmployee } from '../../models/Employee';
+import { EmployeeData } from '../../services/empdata.service';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-employee-detail',
@@ -16,6 +16,8 @@ export class EmployeeDetailComponent implements OnInit {
   constructor(private router: ActivatedRoute, private employeeDataService:EmployeeData, private fb:FormBuilder, private route : Router, private employeeService: EmployeeService) { }
 
   ngOnInit(): void {
+
+    //filtering the employee details
     if(this.employeeDataService.employeeData){
       this.router.params.subscribe((param)=>{
         this.employeeDetail = this.employeeDataService.employeeData.filter(
