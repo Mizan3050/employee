@@ -6,6 +6,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { IEmployee } from '../../models/Employee'
 import { EmployeeData } from '../../services/empdata.service';
 import { Router } from '@angular/router';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-employee-list',
@@ -14,7 +15,8 @@ import { Router } from '@angular/router';
 })
 export class EmployeeListComponent implements OnInit , AfterViewInit {
 
-  displayedColumns: string[] = ['id', 'name', 'username', 'email', 'actions'];
+  selection = new SelectionModel<IEmployee>(true, []);
+  displayedColumns: string[] = ['select','id', 'name', 'username', 'email', 'actions'];
   dataSource : MatTableDataSource<IEmployee>;
   searchKey:string;
   employeeList : IEmployee[];
@@ -60,6 +62,27 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   
   ngAfterViewInit() {
     
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: IEmployee): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
   //applying search filter
