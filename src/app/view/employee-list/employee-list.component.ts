@@ -20,12 +20,12 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   employeeList : IEmployee[];
   searcKeyFound = false;
   length:number;
-  pageSize = 2;
+  pageSize:number = 2;
   pageIndex =0;
   pageEvent:PageEvent;
   pageSizeOptions = [1,2,5,10,20];
   currentIndex : number = 0;
-
+  pageNumber : number = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private employeeService:EmployeeService, private employeeDataService:EmployeeData, private route: Router) { }
 
@@ -42,7 +42,7 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
 
 
   ngOnInit(): void {
-
+    this.pageNumber = this.pageIndex+1;
     //fetching data from api
     if(this.employeeDataService.employeeData){
       this.loadData(0, this.pageSize, this.employeeDataService.employeeData);
@@ -102,6 +102,7 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   //making changes whenever page is changed
   onPageChange(e:PageEvent){
     this.pageIndex = e.pageIndex;
+    this.pageNumber = e.pageIndex+1;
     this.pageSize = e.pageSize;
     this.currentIndex = this.pageSize*this.pageIndex;
     this.length = e.length;

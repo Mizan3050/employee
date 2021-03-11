@@ -7,7 +7,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatTableModule } from "@angular/material/table";
-
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 
