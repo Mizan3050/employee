@@ -6,32 +6,35 @@ import { EmployeeService } from '../../services/employee.service';
 import { IEmployee } from '../../models/Employee'
 import { EmployeeData } from '../../services/empdata.service';
 import { Router } from '@angular/router';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
-export class EmployeeListComponent implements OnInit , AfterViewInit {
+export class EmployeeListComponent implements OnInit  {
 
-  displayedColumns: string[] = ['id', 'name', 'username', 'email', 'actions'];
+  selectedEmployees = new SelectionModel<IEmployee>(true, []);
+  displayedColumns: string[] = ['select','id', 'name', 'username', 'email', 'actions'];
   dataSource : MatTableDataSource<IEmployee>;
   searchKey:string;
   employeeList : IEmployee[];
   searcKeyFound = false;
   length:number;
-  pageSize = 2;
+  pageSize:number = 2;
   pageIndex =0;
   pageEvent:PageEvent;
   pageSizeOptions = [1,2,5,10,20];
   currentIndex : number = 0;
-
+  pageNumber : number = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private employeeService:EmployeeService, private employeeDataService:EmployeeData, private route: Router) { }
 
   //loading data with respected to pages changed
   loadData(pageIndex:number, pageSize:number, empData: IEmployee[]){
     this.dataSource = new MatTableDataSource(empData.slice(pageIndex, (pageIndex+pageSize)))
+    this.length = empData.length;
   }
 
   //clearing search filter
@@ -42,7 +45,7 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
 
 
   ngOnInit(): void {
-
+    this.pageNumber = this.pageIndex+1;
     //fetching data from api
     if(this.employeeDataService.employeeData){
       this.loadData(0, this.pageSize, this.employeeDataService.employeeData);
@@ -52,14 +55,32 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
     this.employeeService.getEmployeeList().subscribe((employeeList: IEmployee[])=>{
       this.loadData(0, this.pageSize,employeeList);
       this.employeeDataService.employeeData = employeeList;
-      this.length = this.employeeDataService.employeeData.length;
+      // this.length = this.employeeDataService.employeeData.length;
     })
     
   }
   }
-  
-  ngAfterViewInit() {
-    
+
+
+  isAllSelected() {
+    const numSelected = this.selectedEmployees.selected.length;
+    const numRows = this.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selectedEmployees.clear() :
+        this.dataSource.data.forEach(row => this.selectedEmployees.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: IEmployee): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selectedEmployees.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
   //applying search filter
@@ -95,18 +116,21 @@ export class EmployeeListComponent implements OnInit , AfterViewInit {
   }
 
   //redirects to employee details page
-  redirectToDetails(id:IEmployee){
-    this.route.navigate([`employeeList/detail/${id.id}`]);
+  redirectToDetails(employee:IEmployee){
+    this.route.navigate([`employeeList/detail/${employee.id}`]);
   }
 
   //making changes whenever page is changed
   onPageChange(e:PageEvent){
     this.pageIndex = e.pageIndex;
+    this.pageNumber = e.pageIndex+1;
     this.pageSize = e.pageSize;
     this.currentIndex = this.pageSize*this.pageIndex;
-    this.length = e.length;
-    console.log(this.currentIndex);
     this.loadData(this.currentIndex,this.pageSize,this.employeeDataService.employeeData);
+  }
+
+  deleteSelected(){
+    console.log(this.selectedEmployees.selected);
   }
 }
 

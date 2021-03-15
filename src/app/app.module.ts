@@ -6,7 +6,7 @@ import { AuthGaurd } from './services/auth-gaurd.service';
 import { AuthService } from './services/auth.service';
 import { EmployeeService } from './services/employee.service';
 import { ViewModule } from './view/view.module';
-import { ControllerModule } from './controller/add-employee/controller.module';
+import { AddEmployeeModule } from './add-employee/add-employee.module';
 import { ServerSideModule } from './server-pagination/server.module';
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
@@ -32,7 +32,7 @@ import { AppRoutingModule } from "./app-routing.module";
     BrowserModule,CommonModule,
     FormsModule, ReactiveFormsModule,
     AppRoutingModule, MatTableModule, MatPaginatorModule,
-    BrowserAnimationsModule,HttpClientModule, MatFormFieldModule, MatIconModule,FontAwesomeModule,MatInputModule,ViewModule,ControllerModule,ServerSideModule
+    BrowserAnimationsModule,HttpClientModule, MatFormFieldModule, MatIconModule,FontAwesomeModule,MatInputModule,ViewModule,AddEmployeeModule,ServerSideModule
   ],
   providers: [AuthGaurd, AuthService, EmployeeService],
   bootstrap: [AppComponent]

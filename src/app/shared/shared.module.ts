@@ -7,20 +7,19 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatTableModule } from "@angular/material/table";
-
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
     imports:[
         CommonModule,
-        FormsModule, ReactiveFormsModule, MatTableModule, MatPaginatorModule,
+        FormsModule,MatCheckboxModule, ReactiveFormsModule, MatTableModule, MatPaginatorModule,
         HttpClientModule, MatFormFieldModule, MatIconModule,FontAwesomeModule,MatInputModule
     ],
     declarations: [
       ],
     exports:[
-        CommonModule,
+        CommonModule,MatCheckboxModule,
         FormsModule, ReactiveFormsModule, MatTableModule, MatPaginatorModule,
         HttpClientModule, MatFormFieldModule, MatIconModule,FontAwesomeModule,MatInputModule
     ]

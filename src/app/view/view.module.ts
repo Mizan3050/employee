@@ -16,9 +16,6 @@ import { ViewRoutingModule } from "./view-routing.module";
         ViewRoutingModule
     ],
     exports:[
-        EmployeeListComponent,
-        EmployeeDetailComponent,
-        ViewRoutingModule
     ]
 })
 
